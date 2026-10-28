@@ -1,13 +1,1014 @@
+
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset = "utf-8">
-    <title>Information</title>
-  </head>
-  <body>
-    <h1>Tuấn Phan</h1>
-    <hr> 
-    <p style = "color : blue">TÔI LÀ PHAN ANH TUẤN <br/></p>
-    <p style = "color : red">Cái cảm giác khi ngồi vào phòng thi đại học bài dư sức mình làm được nhưng chỉ được phép làm phân nửa thôi, nửa còn lại phải bỏ giấy trắng. Bởi vì biết nhà mình nghèo. Phòng thi mình đi ra đầu tiên, người ta còn ráng ở đó làm cho xong. Đi ra liền thấy mẹ chờ: 'Làm bài được không con'. Mình nói: 'Bài này khó quá con làm không được'. Mình nói dối và nhủ không được nói ra, có thể giờ làm mẹ buồn nhưng sau này phải làm mẹ tự hào</p>
-  </body>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kiểm tra Giữa kì 1 - Tin học 12 (Kết nối tri thức) - Canvas LMS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .canvas-header { background-color: #272b30; border-bottom: 2px solid #C7CCD1; }
+        .canvas-sidebar { background-color: #F5F7F8; border-right: 1px solid #D3D9DE; }
+        .canvas-btn { background-color: #394B58; color: white; transition: all 0.2s; }
+        .canvas-btn:hover { background-color: #2D3B45; }
+        .option-card { transition: all 0.2s; border: 1px solid #C7CCD1; }
+        .option-card:hover { border-color: #008EE2; background-color: #F4F6F8; }
+        .option-card.selected { border-color: #008EE2; background-color: #E8F4FC; }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans text-gray-800 min-h-screen flex flex-col">
+
+    <!-- Canvas LMS Top Header -->
+    <header class="canvas-header text-white px-6 py-4 flex justify-between items-center shadow-md">
+        <div class="flex items-center space-x-4">
+            <div class="bg-red-600 text-white font-bold px-3 py-1 rounded uppercase tracking-wider text-sm">Canvas LMS</div>
+            <div>
+                <h1 class="text-lg font-bold">Ôn tập Kiểm tra Giữa kì 1 - Tin học 12</h1>
+                <p class="text-xs text-gray-300">Bộ sách Kết nối tri thức với cuộc sống</p>
+            </div>
+        </div>
+        <div class="flex items-center space-x-6">
+            <div id="timer-box" class="bg-gray-800 px-4 py-2 rounded border border-gray-600 font-mono text-yellow-400 font-bold flex items-center space-x-2">
+                <i class="fa-regular fa-clock"></i>
+                <span id="time-display">45:00</span>
+            </div>
+            <div class="flex items-center space-x-2">
+                <div class="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center font-bold text-white">HS</div>
+                <span class="text-sm font-medium">Học sinh 12</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <div class="flex-1 flex flex-col md:flex-row max-w-7xl mx-auto w-full p-4 gap-6">
+        
+        <!-- Left Quiz Area -->
+        <main class="flex-1 bg-white rounded-lg shadow-md p-6 flex flex-col justify-between">
+            <div id="quiz-container">
+                <!-- Quiz Header Info -->
+                <div class="flex justify-between items-center border-b pb-4 mb-6">
+                    <div>
+                        <span id="question-badge" class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">Chủ đề 1</span>
+                        <h2 id="question-title" class="text-xl font-bold mt-1 text-gray-900">Câu hỏi 1</h2>
+                    </div>
+                    <button onclick="toggleFlag()" id="flag-btn" class="text-gray-400 hover:text-yellow-500 transition flex items-center space-x-1 text-sm font-medium">
+                        <i class="fa-regular fa-flag"></i> <span id="flag-text">Đánh dấu</span>
+                    </button>
+                </div>
+
+                <!-- Question Text -->
+                <div id="question-text" class="text-lg font-medium text-gray-900 mb-6 leading-relaxed">
+                    Đang tải câu hỏi...
+                </div>
+
+                <!-- Options -->
+                <div id="options-container" class="space-y-3 mb-8">
+                    <!-- Dynamic Options -->
+                </div>
+            </div>
+
+            <!-- Quiz Navigation Footer -->
+            <div class="border-t pt-4 flex justify-between items-center mt-auto">
+                <button onclick="prevQuestion()" id="prev-btn" class="px-5 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-50 font-medium disabled:opacity-50 disabled:cursor-not-allowed">
+                    <i class="fa-solid fa-arrow-left mr-2"></i> Câu trước
+                </button>
+                <div class="text-sm text-gray-500 font-medium">
+                    Câu <span id="current-q-num">1</span> / <span id="total-q-num">50</span>
+                </div>
+                <button onclick="nextQuestion()" id="next-btn" class="canvas-btn px-6 py-2 rounded font-medium shadow">
+                    Câu tiếp theo <i class="fa-solid fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </main>
+
+        <!-- Right Sidebar: Question Palette & Submit -->
+        <aside class="w-full md:w-80 canvas-sidebar rounded-lg shadow-md p-4 flex flex-col justify-between">
+            <div>
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="font-bold text-gray-700">Danh sách câu hỏi</h3>
+                    <span class="text-xs bg-gray-200 text-gray-700 px-2 py-0.5 rounded-full font-medium" id="answered-count">0 / 50 đã làm</span>
+                </div>
+                <div id="question-grid" class="grid grid-cols-5 gap-2 max-h-[420px] overflow-y-auto p-1">
+                    <!-- Dynamic Question Bubbles -->
+                </div>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-gray-200">
+                <button onclick="confirmSubmit()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg shadow transition flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    <span>Nộp bài & Xem kết quả</span>
+                </button>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Result Modal -->
+    <div id="result-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full p-8 transform transition-all">
+            <div class="text-center">
+                <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
+                    <i class="fa-solid fa-award"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-900 mb-2">Kết quả bài kiểm tra</h2>
+                <p class="text-gray-600 mb-6">Bạn đã hoàn thành 50 câu hỏi ôn tập Giữa kì 1 Tin học 12</p>
+                
+                <div class="bg-gray-50 rounded-lg p-6 mb-6 grid grid-cols-3 gap-4 text-center">
+                    <div>
+                        <p class="text-sm text-gray-500">Số câu đúng</p>
+                        <p id="res-correct" class="text-2xl font-bold text-green-600">0/50</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Điểm số (Thang 10)</p>
+                        <p id="res-score" class="text-2xl font-bold text-blue-600">0.0</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Thời gian làm bài</p>
+                        <p id="res-time" class="text-2xl font-bold text-purple-600">00:00</p>
+                    </div>
+                </div>
+
+                <div class="flex space-x-4 justify-center">
+                    <button onclick="reviewQuiz()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-2.5 rounded-lg shadow">
+                        <i class="fa-solid fa-rotate-left mr-2"></i> Xem lại đáp án & giải thích
+                    </button>
+                    <button onclick="location.reload()" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium px-6 py-2.5 rounded-lg">
+                        <i class="fa-solid fa-redo mr-2"></i> Làm lại từ đầu
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Logic & 50 Questions Data -->
+    <script>
+        const questions = [
+            // Chủ đề 1: Máy tính và xã hội tri thức (Bài 1 & Bài 2) - 15 câu
+            {
+                id: 1,
+                topic: "Chủ đề 1: Trí tuệ nhân tạo (Bài 1)",
+                question: "Trí tuệ nhân tạo (AI) được hiểu là gì?",
+                options: [
+                    "Khả năng máy tính mô phỏng các hoạt động tư duy của con người.",
+                    "Một loại robot thông minh có hình dáng giống con người.",
+                    "Phần mềm diệt virus cao cấp bảo vệ máy tính.",
+                    "Hệ thống mạng internet cáp quang tốc độ cao."
+                ],
+                correct: 0,
+                rationale: "AI là lĩnh vực khoa học máy tính nhằm tạo ra các hệ thống có khả năng mô phỏng khả năng tư duy, học tập và giải quyết vấn đề của con người."
+            },
+            {
+                id: 2,
+                topic: "Chủ đề 1: Trí tuệ nhân tạo (Bài 1)",
+                question: "Ứng dụng nào sau đây KHÔNG phải là ứng dụng tiêu biểu của Trí tuệ nhân tạo (AI)?",
+                options: [
+                    "Trợ lý ảo Siri, Google Assistant.",
+                    "Hệ thống nhận dạng khuôn mặt mở khóa điện thoại.",
+                    "Phần mềm soạn thảo văn bản Microsoft Word cơ bản.",
+                    "Hệ thống chẩn đoán bệnh tự động qua hình ảnh y tế."
+                ],
+                correct: 2,
+                rationale: "Microsoft Word cơ bản là phần mềm soạn thảo văn bản truyền thống, không tích hợp các tính năng tự học hay suy luận của AI (trừ các tính năng Copilot mới thêm vào sau này, nhưng Word cơ bản bản chất là ứng dụng văn phòng)."
+            },
+            {
+                id: 3,
+                topic: "Chủ đề 1: Trí tuệ nhân tạo (Bài 2)",
+                question: "AI hẹp (Narrow AI) hay AI yếu là hệ thống AI như thế nào?",
+                options: [
+                    "Có khả năng thực hiện mọi công việc thông minh như con người.",
+                    "Chỉ chuyên thực hiện một hoặc một số nhiệm vụ cụ thể giới hạn.",
+                    "Có ý thức và cảm xúc tự chủ giống con người.",
+                    "Chạy trên các máy tính cấu hình yếu, tốc độ chậm."
+                ],
+                correct: 1,
+                rationale: "AI hẹp (Narrow AI) là các hệ thống AI được thiết kế và huấn luyện để giải quyết một nhiệm vụ cụ thể, ví dụ chơi cờ vua, nhận diện khuôn mặt."
+            },
+            {
+                id: 4,
+                topic: "Chủ đề 1: Trí tuệ nhân tạo (Bài 2)",
+                question: "Loại hình AI nào có khả năng tạo ra nội dung mới như văn bản, hình ảnh, âm thanh từ các dữ liệu đầu vào?",
+                options: [
+                    "AI hẹp (Narrow AI).",
+                    "AI tổng quát (AGI).",
+                    "AI tạo sinh (Generative AI).",
+                    "AI cổ điển (Symbolic AI)."
+                ],
+                correct: 2,
+                rationale: "AI tạo sinh (Generative AI) như ChatGPT, Midjourney chuyên tạo ra nội dung mới độc đáo dựa trên các mô hình học máy học từ dữ liệu lớn."
+            },
+            {
+                id: 5,
+                topic: "Chủ đề 1: Trí tuệ nhân tạo (Bài 2)",
+                question: "Đâu là một cảnh báo lớn về sự phát triển của AI trong tương lai?",
+                options: [
+                    "Làm cho máy tính chạy nhanh hơn mức cần thiết.",
+                    "Nguy cơ thất nghiệp ở nhiều ngành nghề và vấn đề đạo đức, bảo mật thông tin.",
+                    "Làm con người thông minh hơn một cách quá nhanh chóng.",
+                    "Làm giảm dung lượng lưu trữ của ổ cứng."
+                ],
+                correct: 1,
+                rationale: "Sự phát triển mạnh mẽ của AI đặt ra nhiều thách thức về đạo đức, quyền riêng tư, an ninh mạng và nguy cơ thay thế lao động con người."
+            },
+            {
+                id: 6,
+                topic: "Chủ đề 1: Trí tuệ nhân tạo (Bài 1)",
+                question: "Hệ thống AI nhận dạng chữ viết tay dựa trên nguyên lý nào là chủ yếu?",
+                options: [
+                    "So sánh trực tiếp từng pixel tuyệt đối với từ điển.",
+                    "Học từ hàng ngàn mẫu chữ viết khác nhau để phân tích đặc trưng nét chữ.",
+                    "Sử dụng cảm biến nhiệt độ gắn trên bút viết.",
+                    "Đọc âm thanh phát ra khi người dùng viết."
+                ],
+                correct: 1,
+                rationale: "AI sử dụng học máy (Machine Learning) và mạng neural nhân tạo để phân tích các mẫu đặc trưng của nét chữ viết tay và nhận diện chính xác."
+            },
+            {
+                id: 7,
+                topic: "Chủ đề 1: Trí tuệ nhân tạo (Bài 2)",
+                question: "Hệ thống AI có khả năng suy luận và tự học nhờ vào yếu tố cốt lõi nào?",
+                options: [
+                    "Dữ liệu lớn (Big Data thuật toán huấn luyện) và sức mạnh tính toán.",
+                    "Việc cắm nhiều dây cáp mạng vào máy tính.",
+                    "Sử dụng hệ điều hành Windows 11.",
+                    "Kết nối trực tiếp với vệ tinh viễn thông."
+                ],
+                correct: 0,
+                rationale: "Để có tri thức và khả năng suy luận, học tập, AI cần được huấn luyện trên các tập dữ liệu lớn (Big Data) với các thuật toán học máy tiên tiến."
+            },
+            {
+                id: 8,
+                topic: "Chủ đề 1: Trí tuệ nhân tạo (Bài 2)",
+                question: "Phát biểu nào sau đây đúng khi nói về AI mạnh (Artificial General Intelligence - AGI)?",
+                options: [
+                    "Đang được sử dụng phổ biến trong điện thoại thông minh hiện nay.",
+                    "Là hệ thống AI có khả năng tư duy, nhận thức và giải quyết mọi vấn đề linh hoạt như con người.",
+                    "Chỉ dùng để chơi cờ vây và cờ vua.",
+                    "Không thể xử lý ngôn ngữ tự nhiên."
+                ],
+                correct: 1,
+                rationale: "AI mạnh (AGI) là khái niệm chỉ hệ thống AI có trí tuệ tương đương hoặc vượt con người trên mọi lĩnh vực nhận thức (hiện vẫn đang trong giai đoạn nghiên cứu phát triển)."
+            },
+            {
+                id: 9,
+                topic: "Chủ đề 1: Trí tuệ nhân tạo (Bài 1)",
+                question: "Trợ lý ảo trên điện thoại thông minh có thể thực hiện công việc nào sau đây?",
+                options: [
+                    "Tự động nấu ăn và rửa bát cho chủ nhân.",
+                    "Nhận diện giọng nói, tìm kiếm thông tin và thực hiện lệnh gọi điện, đặt lịch.",
+                    "Tự động sửa chữa phần cứng điện thoại khi bị hỏng.",
+                    "Sạc pin không dây từ khoảng cách xa 10 mét."
+                ],
+                correct: 1,
+                rationale: "Trợ lý ảo sử dụng công nghệ xử lý ngôn ngữ tự nhiên để nhận diện giọng nói, tra cứu và thực hiện các tác vụ theo yêu cầu người dùng."
+            },
+            {
+                id: 10,
+                topic: "Chủ đề 1: Trí tuệ nhân tạo (Bài 2)",
+                question: "Trong y tế, hệ thống AI hỗ trợ bác sĩ điều gì?",
+                options: [
+                    "Thay thế hoàn toàn bác sĩ phẫu thuật mà không cần con người giám sát.",
+                    "Phân tích phim chụp X-quang, MRI để hỗ trợ chẩn đoán sớm bệnh lý.",
+                    "Sản xuất thuốc tân dược tại nhà cho bệnh nhân.",
+                    "Quản lý lịch trực của y tá."
+                ],
+                correct: 1,
+                rationale: "AI hỗ trợ y tế bằng cách phân tích hình ảnh y khoa cực nhanh và chính xác cao để phát hiện sớm các dấu hiệu bệnh lý như khối u."
+            },
+            {
+                id: 11,
+                topic: "Chủ đề 1: Trí tuệ nhân tạo (Bài 1)",
+                question: "Hệ thống điều khiển tự động trong xe tự lái sử dụng AI để làm gì?",
+                options: [
+                    "Nhận diện chướng ngại vật, biển báo giao thông và đưa ra quyết định lái xe an toàn.",
+                    "Phát nhạc giải trí cho hành khách nghe.",
+                    "Điều hòa nhiệt độ trong xe.",
+                    "Kiểm tra mức nhiên liệu còn lại."
+                ],
+                correct: 0,
+                rationale: "Xe tự lái sử dụng thị giác máy tính và AI để xử lý hình ảnh camera, cảm biến nhằm điều hướng và xử lý tình huống giao thông."
+            },
+            {
+                id: 12,
+                topic: "Chủ đề 1: Trí tuệ nhân tạo (Bài 2)",
+                question: "Đâu là ví dụ về việc ứng dụng AI trong nông nghiệp thông minh?",
+                options: [
+                    "Sử dụng máy gặt đập liên hợp điều khiển cơ học hoàn toàn.",
+                    "Dùng hệ thống AI kết hợp camera và cảm biến để phát hiện sâu bệnh và tự động bón phân, tưới nước.",
+                    "Sử dụng trâu bò cày ruộng theo phương pháp truyền thống.",
+                    "Phơi lúa ngoài sân khi trời nắng."
+                ],
+                correct: 1,
+                rationale: "Nông nghiệp thông minh ứng dụng AI và IoT để giám sát cây trồng, phát hiện sâu bệnh và tối ưu hóa lượng nước, phân bón."
+            },
+            {
+                id: 13,
+                topic: "Chủ đề 1: Trí tuệ nhân tạo (Bài 2)",
+                question: "Hệ thống gợi ý sản phẩm trên các sàn thương mại điện tử (Shopee, Lazada, TikTok Shop) hoạt động dựa trên cơ sở nào?",
+                options: [
+                    "Ngẫu nhiên hiển thị sản phẩm cho người dùng.",
+                    "Thu thập lịch sử tìm kiếm, mua sắm và sở thích của người dùng để AI phân tích và đề xuất sản phẩm phù hợp.",
+                    "Chỉ hiển thị các sản phẩm có giá rẻ nhất.",
+                    "Hiển thị sản phẩm theo thứ tự bảng chữ cái."
+                ],
+                correct: 1,
+                rationale: "Hệ thống gợi ý dựa trên học máy phân tích hành vi người dùng để đề xuất các mặt hàng có khả năng cao họ sẽ quan tâm."
+            },
+            {
+                id: 14,
+                topic: "Chủ đề 1: Trí tuệ nhân tạo (Bài 1)",
+                question: "Hệ thống nhận dạng khuôn mặt (Face ID) ứng dụng công nghệ nào của AI?",
+                options: [
+                    "Xử lý ảnh số và thị giác máy tính (Computer Vision).",
+                    "Truyền dữ liệu qua cáp quang biển.",
+                    "Mã hóa khóa bất đối xứng.",
+                    "Định dạng trang web HTML5."
+                ],
+                correct: 0,
+                rationale: "Nhận dạng khuôn mặt là một ứng dụng tiêu biểu của thị giác máy tính và học máy trong AI."
+            },
+            {
+                id: 15,
+                topic: "Chủ đề 1: Trí tuệ nhân tạo (Bài 2)",
+                question: "Khi sử dụng các công cụ AI tạo sinh (như ChatGPT), người dùng cần lưu ý điều gì về mặt thông tin?",
+                options: [
+                    "Tất cả thông tin do AI tạo ra đều tuyệt đối chính xác 100%.",
+                    "Có thể xuất hiện thông tin sai lệch,a bịa đặt (hallucination) nên cần kiểm chứng lại.",
+                    "Không bao giờ bị trùng lặp với bất kỳ ai.",
+                    "Chỉ được viết bằng tiếng Anh."
+                ],
+                correct: 1,
+                rationale: "AI tạo sinh đôi khi đưa ra các thông tin sai lệch hoặc bịa đặt rất tinh vi (hiện tượng ảo giác - hallucination), do đó cần kiểm chứng."
+            },
+
+            // Chủ đề 2: Mạng máy tính và Internet (Bài 3, 4, 5) - 15 câu
+            {
+                id: 16,
+                topic: "Chủ đề 2: Thiết bị mạng (Bài 3)",
+                question: "Thiết bị mạng nào dùng để kết nối các máy tính trong cùng một mạng LAN và chuyển tiếp gói tin dựa trên địa chỉ MAC?",
+                options: [
+                    "Modem.",
+                    "Switch (Bộ chuyển mạch).",
+                    "Access Point.",
+                    "Cáp quang."
+                ],
+                correct: 1,
+                rationale: "Switch là thiết bị cốt lõi trong mạng LAN, giúp kết nối các thiết bị và chuyển tiếp dữ liệu dựa trên địa chỉ MAC của thiết bị đích."
+            },
+            {
+                id: 17,
+                topic: "Chủ đề 2: Thiết bị mạng (Bài 3)",
+                question: "Chức năng chính của Modem trong hệ thống mạng là gì?",
+                options: [
+                    "Chuyển đổi tín hiệu số từ máy tính thành tín hiệu tương tự (và ngược lại) để truyền qua đường truyền viễn thông/ADSL/cáp quang.",
+                    "In tài liệu từ xa qua mạng Wi-Fi.",
+                    "Lưu trữ dữ liệu tập trung cho toàn bộ công ty.",
+                    "Tạo mạng LAN không dây cho các thiết bị di động."
+                ],
+                correct: 0,
+                rationale: "Modem (Modulator-Demodulator) có nhiệm vụ điều chế và giải điều chế tín hiệu để kết nối mạng internet nhà mạng với hệ thống mạng cục bộ."
+            },
+            {
+                id: 18,
+                topic: "Chủ đề 2: Thiết bị mạng (Bài 3)",
+                question: "Access Point (AP) thường được sử dụng để làm gì trong hệ thống mạng?",
+                options: [
+                    "Cung cấp điểm truy cập mạng không dây (Wi-Fi) cho các thiết bị di động kết nối vào mạng.",
+                    "Lưu trữ tệp tin dung lượng lớn.",
+                    "Bảo mật tường lửa chống virus.",
+                    "Chuyển đổi địa chỉ IP tĩnh thành IP động."
+                ],
+                correct: 0,
+                rationale: "Access Point phát sóng Wi-Fi giúp các thiết bị không dây (laptop, điện thoại) kết nối vào hệ thống mạng nội bộ hoặc internet."
+            },
+            {
+                id: 19,
+                topic: "Chủ đề 2: Giao thức mạng (Bài 4)",
+                question: "Giao thức nào chịu trách nhiệm truyền tải thư điện tử (email) từ máy khách đến máy chủ gửi mail?",
+                options: [
+                    "HTTP.",
+                    "SMTP.",
+                    "FTP.",
+                    "DNS."
+                ],
+                correct: 1,
+                rationale: "SMTP (Simple Mail Transfer Protocol) là giao thức chuẩn dùng để gửi thư điện tử trên Internet."
+            },
+            {
+                id: 20,
+                topic: "Chủ đề 2: Giao thức mạng (Bài 4)",
+                question: "Giao thức nào dùng để phân giải tên miền (ví dụ: www.example.com) thành địa chỉ IP tương ứng?",
+                options: [
+                    "DHCP.",
+                    "DNS (Domain Name System).",
+                    "FTP.",
+                    "TCP/IP."
+                ],
+                correct: 1,
+                rationale: "DNS hoạt động như 'danh bạ' của Internet, dịch tên miền dạng chữ sang địa chỉ IP dạng số mà máy tính hiểu được."
+            },
+            {
+                id: 21,
+                topic: "Chủ đề 2: Giao thức mạng (Bài 4)",
+                question: "Giao thức HTTP hoặc HTTPS được sử dụng chủ yếu cho dịch vụ nào trên Internet?",
+                options: [
+                    "Truyền tệp tin (FTP).",
+                    "Truyền tải và hiển thị các trang web.",
+                    "Gửi nhận thư điện tử.",
+                    "Định tuyến đường đi cho gói tin."
+                ],
+                correct: 1,
+                rationale: "HTTP/HTTPS là giao thức truyền tải siêu văn bản dùng để duyệt web giữa trình duyệt và máy chủ web."
+            },
+            {
+                id: 22,
+                topic: "Chủ đề 2: Giao thức mạng (Bài 4)",
+                question: "Bộ giao thức mạng nào là nền tảng cốt lõi của mạng Internet hiện nay?",
+                options: [
+                    "TCP/IP.",
+                    "LAN/WAN.",
+                    "SMTP/POP3.",
+                    "HTTP/HTML."
+                ],
+                correct: 0,
+                rationale: "TCP/IP (Transmission Control Protocol / Internet Protocol) là bộ giao thức chuẩn quốc tế định nghĩa cách thức truyền thông trên Internet."
+            },
+            {
+                id: 23,
+                topic: "Chủ đề 2: Chia sẻ tài nguyên (Bài 5)",
+                question: "Việc chia sẻ tệp, thư mục và máy in trong mạng cục bộ (LAN) nhằm mục đích chính là gì?",
+                options: [
+                    "Tăng tốc độ kết nối internet lên gấp nhiều lần.",
+                    "Tiết kiệm chi phí thiết bị, tối ưu hóa việc sử dụng tài nguyên chung giữa các máy tính.",
+                    "Bảo vệ máy tính khỏi các cuộc tấn công mã độc.",
+                    "Tự động cập nhật hệ điều hành Windows."
+                ],
+                correct: 1,
+                rationale: "Chia sẻ tài nguyên giúp nhiều máy tính dùng chung máy in, thư mục dữ liệu mà không cần sắm riêng từng thiết bị, tiết kiệm chi phí."
+            },
+            {
+                id: 24,
+                topic: "Chủ đề 2: Giao thức mạng (Bài 4)",
+                question: "Các giao thức nào sau đây thường được sử dụng để nhận thư điện tử từ máy chủ về máy cá nhân?",
+                options: [
+                    "SMTP và HTTP",
+                    "POP3 và IMAP",
+                    "DNS và DHCP",
+                    "FTP và TCP"
+                ],
+                correct: 1,
+                rationale: "POP3 và IMAP là hai giao thức phổ biến được các ứng dụng email client sử dụng để tải thư từ mail server về."
+            },
+            {
+                id: 25,
+                topic: "Chủ đề 2: Thiết bị mạng (Bài 3)",
+                question: "Cáp mạng thông dụng hiện nay thường dùng đầu cắm nào để kết nối vào cổng mạng của máy tính hoặc Switch?",
+                options: [
+                    "Đầu cắm RJ-45.",
+                    "Đầu cắm USB Type-C.",
+                    "Đầu cắm HDMI.",
+                    "Đầu cắm Audio 3.5mm."
+                ],
+                correct: 0,
+                rationale: "Cáp mạng UTP sử dụng đầu bấm RJ-45 để kết nối vào các cổng Ethernet trên Switch, Router hay máy tính."
+            },
+            {
+                id: 26,
+                topic: "Chủ đề 2: Giao thức mạng (Bài 4)",
+                question: "Địa chỉ IP phiên bản IPv4 có đặc điểm cấu trúc như thế nào?",
+                options: [
+                    "Gồm 32 bit, được chia thành 4 nhóm số thập phân cách nhau bởi dấu chấm.",
+                    "Gồm 128 bit, sử dụng hệ cơ số 16.",
+                    "Là một dãy ký tự chữ cái duy nhất không thay đổi.",
+                    "Chỉ gồm 8 bit biểu diễn số từ 0 đến 255."
+                ],
+                correct: 0,
+                rationale: "IPv4 dài 32 bit, biểu diễn dưới dạng 4 số từ 0 đến 255 ngăn cách bởi dấu chấm (ví dụ: 192.168.1.1)."
+            },
+            {
+                id: 27,
+                topic: "Chủ đề 2: Chia sẻ tài nguyên (Bài 5)",
+                question: "Để cho phép máy tính khác trong mạng LAN truy cập vào một thư mục chia sẻ, thao tác cơ bản trong hệ điều hành Windows là gì?",
+                options: [
+                    "Nhấp chuột phải vào thư mục -> Chọn Properties -> Tab Sharing -> Chọn Share và cấu hình quyền truy cập.",
+                    "Copy thư mục đó vào USB rồi cắm sang máy khác.",
+                    "Đổi tên thư mục thành Share Folder.",
+                    "Tắt nguồn máy tính và khởi động lại."
+                ],
+                correct: 0,
+                rationale: "Trong Windows, tính năng Sharing cho phép bật chế độ chia sẻ thư mục qua mạng LAN với các mức phân quyền đọc/ghi."
+            },
+            {
+                id: 28,
+                topic: "Chủ đề 2: Thiết bị mạng (Bài 3)",
+                question: "Thiết bị nào đóng vai trò kết nối các mạng khác nhau (ví dụ mạng LAN gia đình với mạng diện rộng WAN của nhà mạng Internet)?",
+                options: [
+                    "Router (Bộ định tuyến).",
+                    "Switch.",
+                    "Cáp mạng LAN.",
+                    "Bàn phím."
+                ],
+                correct: 0,
+                rationale: "Router có nhiệm vụ định tuyến và chuyển tiếp các gói dữ liệu giữa các mạng khác nhau, điển hình là nối mạng LAN ra Internet."
+            },
+            {
+                id: 29,
+                topic: "Chủ đề 2: Giao thức mạng (Bài 4)",
+                question: "Giao thức Ethernet đóng vai trò gì trong mạng máy tính?",
+                options: [
+                    "Chuẩn giao thức phổ biến nhất cho tầng liên kết dữ liệu trong mạng LAN hữu tuyến.",
+                    "Giao thức duyệt web bảo mật cao.",
+                    "Giao thức gửi email tự động.",
+                    "Giao thức mã hóa dữ liệu ổ cứng."
+                ],
+                correct: 0,
+                rationale: "Ethernet quy định cách các thiết bị truyền dữ liệu trên mạng LAN hữu tuyến."
+            },
+            {
+                id: 30,
+                topic: "Chủ đề 2: Chia sẻ tài nguyên (Bài 5)",
+                question: "Khi chia sẻ máy gia công in trong mạng LAN, các máy tính khác muốn in cần điều kiện gì?",
+                options: [
+                    "Phải được cài đặt driver máy in tương ứng và máy chủ chia sẻ máy in đang bật kết nối.",
+                    "Phải dùng chung một hãng máy tính.",
+                    "Phải kết nối chung một ổ cứng di động.",
+                    "Phải tắt tường lửa hoàn toàn."
+                ],
+                correct: 0,
+                rationale: "Để sử dụng máy in chia sẻ qua mạng LAN, máy tính client cần cài driver và máy chủ chia sẻ (host) phải sẵn sàng."
+            },
+
+            // Chủ đề 3: Đạo đức, pháp luật và văn hóa trong môi trường số (Bài 6) - 10 câu
+            {
+                id: 31,
+                topic: "Chủ đề 3: Đạo đức và pháp luật (Bài 6)",
+                question: "Đâu là một ưu điểm lớn của giao tiếp trong thế giới ảo (mạng xã hội, chat, diễn đàn)?",
+                options: [
+                    "Không bị giới hạn bởi không gian và thời gian, giúp kết nối nhanh chóng.",
+                    "Đảm bảo 100% người dùng trên mạng đều trung thực.",
+                    "Giúp con người không bao giờ cảm thấy mỏi mắt.",
+                    "Thay thế hoàn toàn việc giao tiếp trực tiếp trong đời thực."
+                ],
+                correct: 0,
+                rationale: "Giao tiếp số giúp vượt qua khoảng cách địa lý và thời gian, trao đổi thông tin cực kỳ nhanh chóng."
+            },
+            {
+                id: 32,
+                topic: "Chủ đề 3: Đạo đức và pháp luật (Bài 6)",
+                question: "Nhược điểm tiềm ẩn khi giao tiếp chủ yếu qua không gian mạng là gì?",
+                options: [
+                    "Thiếu cảm xúc trực quan, dễ dẫn đến hiểu lầm, nguy cơ bị lừa đảo hoặc nghiện mạng xã hội.",
+                    "Làm máy tính bị nóng lên và tốn điện.",
+                    "Tốc độ gõ phím quá nhanh.",
+                    "Không thể gửi kèm hình ảnh."
+                ],
+                correct: 0,
+                rationale: "Giao tiếp ảo thiếu biểu cảm khuôn mặt, ngữ điệu, dễ gây hiểu lầm, đồng thời tiềm ẩn rủi ro lộ thông tin cá nhân, tin giả."
+            },
+            {
+                id: 33,
+                topic: "Chủ đề 3: Đạo đức và pháp luật (Bài 6)",
+                question: "Hành vi nào thể hiện tính nhân văn và ứng xử có văn hóa trong không gian mạng?",
+                options: [
+                    "Tôn trọng quyền riêng tư, không phát tán tin giả, lịch sự khi tranh luận.",
+                    "Chửi bới nặc danh những người có ý kiến trái chiều.",
+                    "Chia sẻ hình ảnh riêng tư của người khác lên mạng để câu like.",
+                    "Hack tài khoản mạng xã hội của bạn bè để trêu đùa."
+                ],
+                correct: 0,
+                rationale: "Ứng xử có văn hóa trên mạng đòi hỏi sự tôn trọng, thượng tôn pháp luật và trách nhiệm với thông tin chia sẻ."
+            },
+            {
+                id: 34,
+                topic: "Chủ đề 3: Đạo đức và pháp luật (Bài 6)",
+                question: "Hành vi tung tin sai sự thật (fake news) lên mạng xã hội nhằm câu view gây hậu quả gì?",
+                options: [
+                    "Gây hoang mang dư luận, làm tổn hại uy tín cá nhân/tổ chức và có thể bị xử lý theo pháp luật.",
+                    "Giúp trang cá nhân tăng tương tác vô hại.",
+                    "Làm cho đường truyền internet mượt mà hơn.",
+                    "Không gây ra hậu quả gì đáng kể."
+                ],
+                correct: 0,
+                rationale: "Tin giả gây hậu quả nghiêm trọng về mặt xã hội và vi phạm pháp luật nghiêm trọng."
+            },
+            {
+                id: 35,
+                topic: "Chủ đề 3: Đạo đức và pháp luật (Bài 6)",
+                question: "Khi nhận được một thông tin giật gân, chưa kiểm chứng trên mạng xã hội, bạn nên làm gì?",
+                options: [
+                    "Lập tức chia sẻ ngay cho mọi người cùng biết.",
+                    "Kiểm chứng từ các nguồn báo chí chính thống trước khi tin và chia sẻ.",
+                    "Xóa tài khoản mạng xã hội ngay lập tức.",
+                    "Bình luận xúc phạm người đăng bài."
+                ],
+                correct: 1,
+                rationale: "Người dùng có văn hóa số luôn kiểm chứng nguồn tin trước khi lan truyền để tránh tiếp tay cho tin giả."
+            },
+            {
+                id: 36,
+                topic: "Chủ đề 3: Đạo đức và pháp luật (Bài 6)",
+                question: "Hành vi bắt nạt qua mạng (Cyberbullying) có thể dẫn đến hệ quả nào đối với nạn nhân?",
+                options: [
+                    "Rối loạn tâm lý, trầm cảm, suy sụp tinh thần nặng nề.",
+                    "Giúp nạn nhân mạnh mẽ hơn trong mọi tình huống.",
+                    "Tăng kết quả học tập ở trường.",
+                    "Không ảnh hưởng gì vì chỉ là thế giới ảo."
+                ],
+                correct: 0,
+                rationale: "Bắt nạt trên mạng gây tổn thương tâm lý sâu sắc cho nạn nhân, đôi khi dẫn đến hậu quả thương tâm."
+            },
+            {
+                id: 37,
+                topic: "Chủ đề 3: Đạo đức và pháp luật (Bài 6)",
+                question: "Quy tắc ứng xử nào sau đây là ĐÚNG khi tham gia các hội nhóm trên mạng xã hội?",
+                options: [
+                    "Tuân thủ nội quy nhóm, tôn trọng thành viên khác và đóng góp xây dựng tích cực.",
+                    "Đăng bài quảng cáo bán hàng trái phép liên tục.",
+                    "Chỉ trích tất cả các bài viết của quản trị viên.",
+                    "Đua đòi ngôn từ tục tĩu để tỏ ra ngầu."
+                ],
+                correct: 0,
+                rationale: "Tuân thủ nội quy và tôn trọng cộng đồng là chuẩn mực cơ bản của văn hóa mạng."
+            },
+            {
+                id: 38,
+                topic: "Chủ đề 3: Đạo đức và pháp luật (Bài 6)",
+                question: "Tại sao không nên chia sẻ quá nhiều thông tin cá nhân nhạy cảm (số CCCD, địa chỉ nhà, số điện thoại) lên mạng xã hội công khai?",
+                options: [
+                    "Vì kẻ xấu có thể lợi dụng để lừa đảo, giả mạo danh tính hoặc quấy rối.",
+                    "Vì làm tốn dung lượng bộ nhớ của mạng xã hội.",
+                    "Vì làm điện thoại nhanh hết pin.",
+                    "Vì nhà mạng sẽ tính cước phí cao."
+                ],
+                correct: 0,
+                rationale: "Bảo vệ thông tin cá nhân trên không gian mạng là cách phòng tránh rủi ro lừa đảo, mất tài sản."
+            },
+            {
+                id: 39,
+                topic: "Chủ đề 3: Đạo đức và pháp luật (Bài 6)",
+                question: "Thế nào là 'Dấu chân số' (Digital Footprint)?",
+                options: [
+                    "Dấu vết bàn chân in trên cát khi đi biển.",
+                    "Tập hợp tất cả các dấu vết dữ liệu về hoạt động của một người để lại khi sử dụng Internet.",
+                    "Mật khẩu đăng nhập máy tính cá nhân.",
+                    "Tốc độ gõ bàn phím của người dùng."
+                ],
+                correct: 1,
+                rationale: "Dấu chân số là toàn bộ lịch sử hoạt động, bài đăng, lượt thích, tìm kiếm của bạn trên không gian mạng."
+            },
+            {
+                id: 40,
+                topic: "Chủ đề 3: Đạo đức và pháp luật (Bài 6)",
+                question: "Khi thấy người khác bị bói toán, lăng mạ hoặc bôi nhọ trên mạng xã hội, hành động văn minh là gì?",
+                options: [
+                    "Hùa theo vào chửi bới cho vui.",
+                    "Báo cáo (report) nội dung xấu, động viên nạn nhân và không tham gia tán phát.",
+                    "Lờ đi vì không phải chuyện của mình.",
+                    "Chụp màn hình gửi cho tất cả bạn bè xem."
+                ],
+                correct: 1,
+                rationale: "Ứng xử nhân văn đòi hỏi lên án cái ác, bảo vệ người yếu thế và báo cáo các hành vi vi phạm chuẩn mực đạo đức/pháp luật trên mạng."
+            },
+
+            // Chủ đề 4: Giải quyết vấn đề với sự trợ giúp của máy tính (Bài 7 - HTML) - 10 câu
+            {
+                id: 41,
+                topic: "Chủ đề 4: HTML và cấu trúc web (Bài 7)",
+                question: "HTML là viết tắt của cụm từ nào?",
+                options: [
+                    "HyperText Markup Language.",
+                    "High Transfer Machine Language.",
+                    "Hyperlink Text Making Loop.",
+                    "Home Tool Multi Language."
+                ],
+                correct: 0,
+                rationale: "HTML (HyperText Markup Language) là ngôn ngữ đánh dấu siêu văn bản dùng để thiết kế cấu trúc các trang web."
+            },
+            {
+                id: 42,
+                topic: "Chủ đề 4: HTML và cấu trúc web (Bài 7)",
+                question: "Cấu trúc cơ bản của một tài liệu HTML bắt đầu và kết thúc bằng thẻ nào?",
+                options: [
+                    "`<html>` và `</html>`",
+                    "`<body>` và `</body>`",
+                    "`<head>` and `</head>`",
+                    "`<web>` and `</web>`"
+                ],
+                correct: 0,
+                rationale: "Mọi tài liệu HTML chuẩn đều nằm bên trong cặp thẻ gốc `<html>...</html>`."
+            },
+            {
+                id: 43,
+                topic: "Chủ đề 4: HTML và cấu trúc web (Bài 7)",
+                question: "Phần nào trong tài liệu HTML chứa các thông tin siêu dữ liệu như tiêu đề trang web (`<title>`), khai báo bảng mã (`<meta>`):",
+                options: [
+                    "`<body>`",
+                    "`<head>`",
+                    "`<html>`",
+                    "`<footer>`"
+                ],
+                correct: 1,
+                rationale: "Thẻ `<head>` chứa các thông tin cấu hình, tiêu đề trang, liên kết CSS nhưng không hiển thị trực tiếp lên vùng nội dung chính của trình duyệt."
+            },
+            {
+                id: 44,
+                topic: "Chủ đề 4: HTML và cấu trúc web (Bài 7)",
+                question: "Thẻ HTML nào dùng để hiển thị nội dung chính xuất hiện trên cửa sổ trình duyệt cho người dùng xem?",
+                options: [
+                    "`<body>`",
+                    "`<title>`",
+                    "`<meta>`",
+                    "`<header>`"
+                ],
+                correct: 0,
+                rationale: "Toàn bộ nội dung hiển thị trên trang web (văn bản, hình ảnh, nút bấm...) đều được đặt trong cặp thẻ `<body>...</body>`."
+            },
+            {
+                id: 45,
+                topic: "Chủ đề 4: HTML và cấu trúc web (Bài 7)",
+                question: "Để tạo tiêu đề đề mục (heading) lớn nhất trong HTML, ta sử dụng thẻ nào?",
+                options: [
+                    "`<h1>`",
+                    "`<h6>`",
+                    "`<head>`",
+                    "`<header>`"
+                ],
+                correct: 0,
+                rationale: "Thẻ `<h1>` đến `<h6>` dùng để tạo các đề mục từ lớn nhất (`<h1>`) đến nhỏ nhất (`<h6>`)."
+            },
+            {
+                id: 46,
+                topic: "Chủ đề 4: HTML và cấu trúc web (Bài 7)",
+                question: "Thẻ HTML nào sau đây dùng để định nghĩa một đoạn văn bản (paragraph)?",
+                options: [
+                    "`<p>`",
+                    "`<b>`",
+                    "`<br>`",
+                    "`<a>`"
+                ],
+                correct: 0,
+                rationale: "Thẻ `<p>` (paragraph) dùng để tạo các đoạn văn bản trong trang web."
+            },
+            {
+                id: 47,
+                topic: "Chủ đề 4: HTML và cấu trúc web (Bài 7)",
+                question: "Để tạo một siêu liên kết (hyperlink) chuyển đến trang web khác trong HTML, ta dùng thẻ gì?",
+                options: [
+                    "`<a>` (với thuộc tính `href`)",
+                    "`<link>`",
+                    "`<href>`",
+                    "`<url>`"
+                ],
+                correct: 0,
+                rationale: "Thẻ `<a>` kết hợp thuộc tính `href` dùng để tạo liên kết đến các trang web hoặc tài nguyên khác."
+            },
+            {
+                id: 48,
+                topic: "Chủ đề 4: HTML và cấu trúc web (Bài 7)",
+                question: "Thẻ nào trong HTML dùng để chèn một hình ảnh vào trang web?",
+                    options: [
+                    "`<img>`",
+                    "`<image>`",
+                    "`<pic>`",
+                    "`<src>`"
+                ],
+                correct: 0,
+                rationale: "Thẻ `<img>` (image) dùng để hiển thị hình ảnh trên trang web thông qua thuộc tính `src` dẫn tới đường dẫn ảnh."
+            },
+            {
+                id: 49,
+                topic: "Chủ đề 4: HTML và cấu trúc web (Bài 7)",
+                question: "Đâu là cú pháp khai báo kiểu tài liệu HTML5 chuẩn ở dòng đầu tiên của tệp?",
+                options: [
+                    "`<!DOCTYPE html>`",
+                    "`<html version='5'>`",
+                    "`<doctype html5>`",
+                    "`<start html>`"
+                ],
+                correct: 0,
+                rationale: "`<!DOCTYPE html>` là khai báo bắt buộc ở đầu tệp để trình duyệt hiểu đây là tài liệu HTML5 chuẩn."
+            },
+            {
+                id: 50,
+                topic: "Chủ đề 4: HTML và cấu trúc web (Bài 7)",
+                question: "Để tạo một danh sách dạng liệt kê không có thứ tự (bulleted list) trong HTML, ta sử dụng thẻ nào?",
+                options: [
+                    "`<ul>` kết hợp với các thẻ `<li>`",
+                    "`<ol>` kết hợp với các thẻ `<li>`",
+                    "`<list>`",
+                    "`<dl>`"
+                ],
+                correct: 0,
+                rationale: "`<ul>` (Unordered List) tạo danh sách không có thứ tự, còn `<ol>` tạo danh sách có thứ tự (Ordered List)."
+            }
+        ];
+
+        let currentQuestion = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+        let flagged = new Array(questions.length).fill(false);
+        let timeLeft = 45 * 60; // 45 minutes
+        let timerInterval;
+        let isSubmitted = false;
+
+        // Initialize App
+        window.onload = function() {
+            document.getElementById('total-q-num').innerText = questions.length;
+            renderQuestionGrid();
+            loadQuestion(0);
+            startTimer();
+        };
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    alert("Đã hết thời gian làm bài!");
+                    submitQuiz();
+                    return;
+                }
+                timeLeft--;
+                let mins = Math.floor(timeLeft / 60);
+                let secs = timeLeft % 60;
+                document.getElementById('time-display').innerText = 
+                    `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        function renderQuestionGrid() {
+            const grid = document.getElementById('question-grid');
+            grid.innerHTML = '';
+            questions.forEach((q, index) => {
+                let btn = document.createElement('button');
+                btn.className = `w-10 h-10 rounded-lg font-bold text-sm flex items-center justify-center transition border ${
+                    index === currentQuestion ? 'ring-2 ring-blue-500 ring-offset-1' : ''
+                }`;
+                
+                // Color states
+                if (userAnswers[index] !== null) {
+                    btn.className += ' bg-blue-600 text-white border-blue-600';
+                } else {
+                    btn.className += ' bg-white text-gray-700 border-gray-300 hover:bg-gray-100';
+                }
+
+                if (flagged[index]) {
+                    btn.innerHTML = `${index + 1} <i class="fa-solid fa-flag text-yellow-400 text-[10px] absolute top-1 right-1"></i>`;
+                    btn.className += ' relative';
+                } else {
+                    btn.innerText = index + 1;
+                }
+
+                btn.onclick = () => goToQuestion(index);
+                grid.appendChild(btn);
+            });
+
+            // Update answered count
+            let answeredCount = userAnswers.filter(a => a !== null).length;
+            document.getElementById('answered-count').innerText = `${answeredCount} / ${questions.length} đã làm`;
+        }
+
+        function loadQuestion(index) {
+            currentQuestion = index;
+            const q = questions[index];
+
+            document.getElementById('current-q-num').innerText = index + 1;
+            document.getElementById('question-badge').innerText = q.topic;
+            document.getElementById('question-title').innerText = `Câu hỏi ${index + 1}`;
+            document.getElementById('question-text').innerHTML = q.question;
+
+            // Flag status
+            const flagBtn = document.getElementById('flag-btn');
+            if (flagged[index]) {
+                flagBtn.className = "text-yellow-500 font-medium flex items-center space-x-1 text-sm";
+                document.getElementById('flag-text').innerText = "Đã đánh dấu";
+            } else {
+                flagBtn.className = "text-gray-400 hover:text-yellow-500 font-medium flex items-center space-x-1 text-sm";
+                document.getElementById('flag-text').innerText = "Đánh dấu";
+            }
+
+            // Render Options
+            const optContainer = document.getElementById('options-container');
+            optContainer.innerHTML = '';
+            q.options.forEach((opt, optIdx) => {
+                let isSelected = userAnswers[index] === optIdx;
+                let div = document.createElement('div');
+                div.className = `option-card p-4 rounded-lg cursor-pointer flex items-center space-x-3 ${isSelected ? 'selected' : 'bg-white'}`;
+                
+                if (isSubmitted) {
+                    if (optIdx === q.correct) {
+                        div.className += ' bg-green-100 border-green-500 text-green-900';
+                    } else if (isSelected && optIdx !== q.correct) {
+                        div.className += ' bg-red-100 border-red-500 text-red-900';
+                    }
+                }
+
+                div.innerHTML = `
+                    <div class="w-6 h-6 rounded-full border flex items-center justify-center font-bold text-xs ${isSelected ? 'bg-blue-600 text-white border-blue-600' : 'border-gray-400 text-gray-600'}">
+                        ${String.fromCharCode(65 + optIdx)}
+                    </div>
+                    <div class="flex-1 font-medium text-gray-800">${opt}</div>
+                `;
+                
+                if (!isSubmitted) {
+                    div.onclick = () => selectOption(index, optIdx);
+                }
+                optContainer.appendChild(div);
+            });
+
+            // Show rationale if submitted
+            let existingRationale = document.getElementById('rationale-box');
+            if (existingRationale) existingRationale.remove();
+
+            if (isSubmitted) {
+                let ratDiv = document.createElement('div');
+                ratDiv.id = 'rationale-box';
+                ratDiv.className = 'mt-4 p-4 rounded-lg bg-blue-50 border border-blue-200 text-blue-900 text-sm';
+                ratDiv.innerHTML = `<strong><i class="fa-solid fa-circle-info mr-1"></i> Giải thích:</strong> ${q.rationale}`;
+                document.getElementById('quiz-container').appendChild(ratDiv);
+            }
+
+            // Nav buttons state
+            document.getElementById('prev-btn').disabled = index === 0;
+            document.getElementById('next-btn').innerText = index === questions.length - 1 ? "Hoàn thành" : "Câu tiếp theo";
+
+            renderQuestionGrid();
+        }
+
+        function selectOption(qIdx, optIdx) {
+            userAnswers[qIdx] = optIdx;
+            loadQuestion(qIdx);
+        }
+
+        function toggleFlag() {
+            flagged[currentQuestion] = !flagged[currentQuestion];
+            loadQuestion(currentQuestion);
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                loadQuestion(currentQuestion + 1);
+            } else {
+                confirmSubmit();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                loadQuestion(currentQuestion - 1);
+            }
+        }
+
+        function goToQuestion(index) {
+            loadQuestion(index);
+        }
+
+        function confirmSubmit() {
+            let unanswered = userAnswers.filter(a => a === null).length;
+            if (unanswered > 0 && !isSubmitted) {
+                if (!confirm(`Bạn còn ${unanswered} câu hỏi chưa trả lời. Bạn có chắc chắn muốn nộp bài không?`)) {
+                    return;
+                }
+            }
+            submitQuiz();
+        }
+
+        function submitQuiz() {
+            if (!isSubmitted) {
+                clearInterval(timerInterval);
+                isSubmitted = true;
+            }
+
+            let correctCount = 0;
+            questions.forEach((q, idx) => {
+                if (userAnswers[idx] === q.correct) {
+                    correctCount++;
+                }
+            });
+
+            let score = ((correctCount / questions.length) * 10).toFixed(1);
+            let timeSpentSecs = (45 * 60) - timeLeft;
+            let minsSpent = Math.floor(timeSpentSecs / 60);
+            let secsSpent = timeSpentSecs % 60;
+
+            document.getElementById('res-correct').innerText = `${correctCount}/${questions.length}`;
+            document.getElementById('res-score').innerText = score;
+            document.getElementById('res-time').innerText = `${minsSpent}p ${secsSpent}s`;
+
+            document.getElementById('result-modal').classList.remove('hidden');
+            document.getElementById('result-modal').classList.add('flex');
+            loadQuestion(currentQuestion);
+        }
+
+        function reviewQuiz() {
+            document.getElementById('result-modal').classList.remove('flex');
+            document.getElementById('result-modal').classList.add('hidden');
+            loadQuestion(0);
+        }
+    </script>
+</body>
 </html>
+```eof
+
+### Tóm tắt bài kiểm tra & Lời động viên
+- **Nội dung:** Bộ 50 câu hỏi ôn tập chất lượng cao bám sát 100% ma trận đề kiểm tra Giữa kì 1 Tin học 12 (Kết nối tri thức), bao gồm: Trí tuệ nhân tạo (Bài 1, 2), Mạng máy tính & Internet (Bài 3, 4, 5), Đạo đức, pháp luật số (Bài 6) và HTML & Cấu trúc web (Bài 7).
+- **Giao diện Canvas LMS:** Thiết kế trực quan, chuyên nghiệp với đồng hồ đếm ngược, bảng định vị câu hỏi, hệ thống chấm điểm tự động và phần giải thích chi tiết cho từng câu.
+
+Chúc bạn ôn tập thật tốt và đạt kết quả cao trong kỳ thi giữa kì sắp tới!
